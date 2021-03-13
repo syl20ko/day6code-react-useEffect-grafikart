@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+
+function useIncrement(initial, step) {
+  const [count, setCount] = useState(initial);
+
+  const increment = () => {
+    setCount((count) => count + step);
+  };
+
+  return [count, increment];
+}
+
+function Compteur() {
+  const [count, increment] = useIncrement(0, 2);
+
+  useEffect(() => {document.title = 'Compteur ' + count}, [count])
+
+  return <button onClick={increment}>incrémenter {count}</button>;
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Compteur />
     </div>
   );
 }
