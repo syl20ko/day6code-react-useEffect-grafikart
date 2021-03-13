@@ -1,17 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { useState, useEffect } from "react";
+
+function useIncrement(initial, step) {
+  const [count, setCount] = useState(initial);
+
+  const increment = () => {
+    setCount((count) => count + step);
+  };
+
+  return [count, increment];
+}
+
+function Compteur() {
+  const [count, increment] = useIncrement(0, 2);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      console.log("hello");
+      increment();
+    }, 1000);
+    /* pour démonter */
+    return function () {
+      clearInterval(timer);
+    };
+  }, []);
+
+
+  useEffect(() => {document.title = "Compteur " + count}, [count])
+
+  return <button onClick={increment}>incrémenter {count}</button>;
+}
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  <div><Compteur/></div>,
+    document.getElementById('root')
+  );
+  
